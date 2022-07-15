@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container } from '@mui/system';
+import { useContext, useEffect, useState } from 'react';
+import { ApplicationContext } from './ApplicationContext';
+import Form from './components/Form';
+import HistoryFoods from './components/HistoryFoods';
+import Login from './components/Login';
+import firebase from './service/firebase';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+  const {user, updateUser}:any = useContext(ApplicationContext)
+
+  useEffect(() => {
+    console.log({firebase})
+    firebase.auth().onAuthStateChanged((user:any) => {
+      updateUser(user)
+    })
+  }, [])
+
+  if(user){
+    return (
+      <Container fixed>
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          <span><b>Hola {user.displayName}</b></span><br/>
+          <span onClick={() => firebase.auth().signOut()}>Logout</span>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+        <h1>Carga tus comidas</h1>
+        <Form/>
+        <HistoryFoods/>
+      </Container>
+    );
+  }
+  return(
+    <Container fixed>
+      <Login/>
+    </Container>
   );
+
 }
 
 export default App;

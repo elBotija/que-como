@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.colacion{
+  background: #A8E6CF;
+}
+.desayuno{
+  background: #DCEDC1;
+}
+.almuerzo{
+  background: #FFD3B6;
+}
+.merienda{
+  background: #FFAAA5;
+}
+.cena{
+  background: #FF8B94;
+}
+
+.c-pointer{
+  cursor: pointer;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+}

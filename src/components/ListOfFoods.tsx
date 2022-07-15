@@ -11,6 +11,8 @@ import { useContext } from 'react';
 import { ApplicationContext } from '../ApplicationContext';
 import { deleteFood } from '../service/deleteFood';
 import swal from 'sweetalert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -23,9 +25,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
@@ -47,7 +46,7 @@ const handlerDelete = (id:string) => {
     title: "Estás seguro?",
     text: "Una vez que eliminas una comida, no podrás recuperarla!",
     icon: "warning",
-    buttons: ["Cancelar", true,],
+    buttons: ["Cancelar", true],
     dangerMode: true,
   })
   .then((willDelete) => {
@@ -81,7 +80,7 @@ export default function ListOfFoods({ data, date }: Props) {
           </TableHead>
           <TableBody>
             {data.map((row, i) => (
-              <StyledTableRow key={i}>
+              <StyledTableRow className={`${row.typeFood}`} key={i}>
                 <StyledTableCell component="th" scope="row">
                   {dayjs.unix(row.time.seconds).format("HH:mm") }
                 </StyledTableCell>
@@ -90,8 +89,9 @@ export default function ListOfFoods({ data, date }: Props) {
                 <StyledTableCell>{row.bebida}</StyledTableCell>
                 <StyledTableCell>{row.postre}</StyledTableCell>
                 <StyledTableCell>
-                  <span onClick={()=> updateEditFood(row)}>edit | </span>
-                  <span onClick={()=> handlerDelete(row.id)}>delete</span>
+                  <span className="c-pointer" onClick={()=> updateEditFood(row)}><EditIcon/></span>
+                  {'\u00A0'}{'\u00A0'}{'\u00A0'}
+                  <span className="c-pointer" onClick={()=> handlerDelete(row.id)}><DeleteIcon/></span>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

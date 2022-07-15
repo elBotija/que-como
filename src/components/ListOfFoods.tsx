@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { useContext } from 'react';
 import { ApplicationContext } from '../ApplicationContext';
 import { deleteFood } from '../service/deleteFood';
+import swal from 'sweetalert';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,6 +42,26 @@ interface Props {
   date: string
 };   
 
+const handlerDelete = (id:string) => {
+  swal({
+    title: "Estás seguro?",
+    text: "Una vez que eliminas una comida, no podrás recuperarla!",
+    icon: "warning",
+    buttons: ["Cancelar", true,],
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      deleteFood(id)
+      swal("Poof! Tu comida fue borrada!", {
+        icon: "success",
+      });
+    } else {
+      swal("Tu comida se encuentra a salvo!");
+    }
+  });
+}
+
 export default function ListOfFoods({ data, date }: Props) {
   const { updateEditFood }: any = useContext(ApplicationContext);
   return (
@@ -70,7 +91,7 @@ export default function ListOfFoods({ data, date }: Props) {
                 <StyledTableCell>{row.postre}</StyledTableCell>
                 <StyledTableCell>
                   <span onClick={()=> updateEditFood(row)}>edit | </span>
-                  <span onClick={()=> deleteFood(row.id)}>delete</span>
+                  <span onClick={()=> handlerDelete(row.id)}>delete</span>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

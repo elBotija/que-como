@@ -41,7 +41,7 @@ interface Props {
   date: string
 };   
 
-const handlerDelete = (id:string) => {
+const handlerDelete = (id:string, date:string, foods:any) => {
   swal({
     title: "Estás seguro?",
     text: "Una vez que eliminas una comida, no podrás recuperarla!",
@@ -51,7 +51,7 @@ const handlerDelete = (id:string) => {
   })
   .then((willDelete) => {
     if (willDelete) {
-      deleteFood(id)
+      deleteFood(id, date, foods)
       swal("Poof! Tu comida fue borrada!", {
         icon: "success",
       });
@@ -62,7 +62,7 @@ const handlerDelete = (id:string) => {
 }
 
 export default function ListOfFoods({ data, date }: Props) {
-  const { updateEditFood }: any = useContext(ApplicationContext);
+  const { updateEditFood, foods }: any = useContext(ApplicationContext);
   return (
     <>
       <h2>{date}</h2>
@@ -90,8 +90,8 @@ export default function ListOfFoods({ data, date }: Props) {
                 <StyledTableCell>{row.postre}</StyledTableCell>
                 <StyledTableCell>
                   <span className="c-pointer" onClick={()=> updateEditFood(row)}><EditIcon/></span>
-                  {'\u00A0'}{'\u00A0'}{'\u00A0'}
-                  <span className="c-pointer" onClick={()=> handlerDelete(row.id)}><DeleteIcon/></span>
+                  
+                  <span className="c-pointer" onClick={()=> handlerDelete(row.id,date,foods)}><DeleteIcon/></span>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

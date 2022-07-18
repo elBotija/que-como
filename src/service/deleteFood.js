@@ -1,10 +1,12 @@
-import { db } from './firebase';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { updateFood } from "./updateFood"
 
-export const deleteFood = async (id) => {
-  const taskDocRef = doc(db, 'foods', id);
+export const deleteFood = async (id, date, foods) => {
   try {
-    await deleteDoc(taskDocRef);
+    console.log({id,date,foods})
+    const foodsByDay = foods.find(f => f.day === date)
+    const keyToDelete = foodsByDay.id;
+    const removedFood = foodsByDay.foods.filter(f => f.id !== id)
+    await updateFood(keyToDelete, { foods: removedFood, user:foodsByDay.user })
   } catch (error) {
     alert(error)
   }

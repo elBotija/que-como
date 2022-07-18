@@ -15,6 +15,12 @@ import { ApplicationContext } from '../ApplicationContext';
 import {addFood} from '../service/addFood';
 import dayjs from 'dayjs';
 import { updateFood } from '../service/updateFood';
+import { v4 as uuidv4 } from 'uuid';
+import es from 'dayjs/locale/es'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+dayjs.extend(customParseFormat)
+dayjs.locale(es)
 
 export default function From() {
   const [comida, setComida] = React.useState('');
@@ -24,7 +30,7 @@ export default function From() {
   const [time, setTime] = React.useState<Date | null>(
     new Date(),
   );
-  const { updateFoods, user, editFood, updateEditFood }: any = useContext(ApplicationContext);
+  const { user, editFood, updateEditFood, foods }: any = useContext(ApplicationContext);
 
   const handleChangeTime = (newValue: Date | null) => {
     console.log("eeeee time",newValue)
@@ -45,6 +51,7 @@ export default function From() {
 
   useEffect(() => {
     if (editFood.id) {
+      console.log(editFood)
       setComida(editFood.comida);
       setBebida(editFood.bebida);
       setPostre(editFood.postre);
@@ -135,7 +142,8 @@ export default function From() {
       {editFood.id && <>
         <Button variant="contained" color="primary" onClick={(e)=> {
           e.preventDefault();
-          updateFood(editFood.id, {comida, bebida, postre, typeFood, time})
+          const isExistDay = foods.find((food:any) => food.day === dayjs(time).format("dddd DD-MM-YYYY"))
+          updateFood(isExistDay.id, {foods: [...isExistDay.foods.filter((x:any) => x.id !== editFood.id), {comida, bebida, postre, typeFood, time, id: editFood.id}], user: user.email})
         }}>Editar</Button>
         <Button variant="contained"  onClick={(e)=> {
           e.preventDefault();
@@ -146,7 +154,12 @@ export default function From() {
       {!editFood.id &&
         <Button variant="contained" color="primary" onClick={()=> {
           const email = user.email;
-          addFood({comida, bebida, postre, typeFood, time, user: email})
+          const isExistDay = foods.find((food:any) => food.day === dayjs(time).format("dddd DD-MM-YYYY"))
+          if(isExistDay){
+            updateFood(isExistDay.id, {foods: [...isExistDay.foods, {comida, bebida, postre, typeFood, time, id: uuidv4()}], user: user.email})
+          }else {
+            addFood({comida, bebida, postre, typeFood, time, id: uuidv4(), user: email})
+          }
           cleraForm()
         }}>Guardar</Button>
       }

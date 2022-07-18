@@ -16,32 +16,23 @@ export default function HistoryFoods() {
   React.useEffect(() => {
     //disable eslint for next line
     const dates = [] as any[];
-    const foodsbyDate = foods.reduce((acc:any, food:any) => {
-      const date = dayjs.unix(food.time.seconds).format('dddd DD-MM-YYYY')
-      if(!acc[date]){
-        acc[date] = []
-        dates.push(date)
-      }
-      acc[date].push(food)
-      return acc
-    }
-    , {})
-    setFoodsToShow(foodsbyDate)
+    setFoodsToShow(foods.foods)
     //sorted dec days
-    const sortedDays = dates.sort((a,b) => {
-      return dayjs(a,"dddd DD-MM-YYYY").isAfter(dayjs(b,"dddd DD-MM-YYYY")) ? -1 : 1
+    const sortedDays = foods.sort((a:any,b:any) => {
+      return dayjs(a.day,"dddd DD-MM-YYYY").isAfter(dayjs(b.day,"dddd DD-MM-YYYY")) ? -1 : 1
     })
+    console.log("sortedDays")
     console.log(sortedDays)
     setSortedDays(sortedDays)
     
   }, [foods])
-  
+    
   return (
     <>
       <h1>Tu ultimos 30 días</h1>
       {!sortedDays.length && <div className='center-content'><CircularProgress/></div>}
-      {!!sortedDays.length && sortedDays.map((day:any, i:number) => {
-        return (<div key={i}><ListOfFoods data={foodsToShow[day]} date={day}/></div>)
+      {!!sortedDays.length && sortedDays.map((x:any, i:number) => {
+        return (<div key={i}><ListOfFoods data={x.foods} date={x.day}/></div>)
       })}
     </>
   );

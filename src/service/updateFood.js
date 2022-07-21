@@ -5,7 +5,7 @@ export const updateFood = async (id, data) => {
   console.log("call update with", id, data)
   const taskDocRef = doc(db, data.user, id);
   try {
-    await updateDoc(taskDocRef, { ...data, ejercicio: "", peso: "", notas:"" } );
+    await updateDoc(taskDocRef, { ...data } );
   } catch (error) {
     alert(error)
   }

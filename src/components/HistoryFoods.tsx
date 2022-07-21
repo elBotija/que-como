@@ -5,6 +5,7 @@ import ListOfFoods from './ListOfFoods';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import es from 'dayjs/locale/es'
 import { CircularProgress } from '@mui/material';
+import Others from './Others';
 dayjs.extend(customParseFormat)
 dayjs.locale(es)
 
@@ -32,7 +33,10 @@ export default function HistoryFoods() {
       <h1>Tu ultimos 30 días</h1>
       {!sortedDays.length && <div className='center-content'><CircularProgress/></div>}
       {!!sortedDays.length && sortedDays.map((x:any, i:number) => {
-        return (<div key={i}><ListOfFoods data={x.foods} date={x.day}/></div>)
+        return (<div key={i}>
+          <ListOfFoods data={x.foods} date={x.day}/>
+          <Others data={ {notas: x.notas , ejercicio:x.ejercicio, peso:x.peso, id: x.id }}/>
+        </div>)
       })}
     </>
   );

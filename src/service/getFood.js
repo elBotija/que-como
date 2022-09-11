@@ -3,7 +3,7 @@ import { collection, query, orderBy, onSnapshot, where, limit } from 'firebase/f
 
 export const getFood = async (user, updateFn) => {
   try {
-    const q = query(collection(db, user), orderBy('created', 'desc'), limit(250));
+    const q = query(collection(db, user), orderBy('created', 'desc'), limit(31));
     const res = new Promise((resolve, reject) => {
       onSnapshot(q, (querySnapshot)=> {
         const resMap = querySnapshot.docs.map(doc => {

@@ -41,7 +41,7 @@ export default function From() {
     setTypeFood(event.target.value as string);
   };
 
-  const cleraForm = () => {
+  const cleanForm = () => {
     setComida('');
     setBebida('');
     setPostre('');
@@ -51,14 +51,13 @@ export default function From() {
 
   useEffect(() => {
     if (editFood.id) {
-      console.log(editFood)
       setComida(editFood.comida);
       setBebida(editFood.bebida);
       setPostre(editFood.postre);
       setTypeFood(editFood.typeFood);
       setTime(dayjs.unix(editFood.time.seconds).toDate());
     } else {
-      cleraForm();
+      cleanForm();
     }
   }, [editFood])
 
@@ -144,6 +143,7 @@ export default function From() {
           e.preventDefault();
           const isExistDay = foods.find((food:any) => food.day === dayjs(time).format("dddd DD-MM-YYYY"))
           updateFood(isExistDay.id, {foods: [...isExistDay.foods.filter((x:any) => x.id !== editFood.id), {comida, bebida, postre, typeFood, time, id: editFood.id}], user: user.email})
+          cleanForm();
         }}>Editar</Button>
         <Button variant="contained"  onClick={(e)=> {
           e.preventDefault();
@@ -160,7 +160,7 @@ export default function From() {
           }else {
             addFood({comida, bebida, postre, typeFood, time, id: uuidv4(), user: email})
           }
-          cleraForm()
+          cleanForm()
         }}>Guardar</Button>
       }
     </Box>

@@ -14,7 +14,6 @@ export const getFood = async (user, updateFn) => {
           }
         })
         updateFn(resMap)
-        console.log("resMap", resMap)
         resolve(resMap)
       })
     })

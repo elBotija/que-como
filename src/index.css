@@ -41,6 +41,7 @@ code {
 .widget {
   padding: 1rem;
   font-weight: bold;
+  margin-left: auto;
 }
 .widget h2{
   margin: 0;
@@ -50,5 +51,6 @@ code {
 }
 .history-title{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }

@@ -24,23 +24,19 @@ export default function HistoryFoods() {
       const sortedDays = await foods.sort((a: any, b: any) => {
         return dayjs(a.day, "dddd DD-MM-YYYY").isAfter(dayjs(b.day, "dddd DD-MM-YYYY")) ? -1 : 1
       })
-      console.log("sorteado 1")
 
       // sort foods by time
       const sortedFoods = await sortedDays.map((day: any) => {
         day.foods = day.foods.sort((a: any, b: any) => {
-          console.log(dayjs(a.time, "HH:mm"))
           return dayjs.unix(a.time.seconds).isAfter(dayjs.unix(b.time.seconds)) ? 1 : -1
         })
         return day
       })
-      console.log("sorteado 2")
 
       setSortedDays(sortedDays)
 
       const myLastWeight = sortedDays.length ? sortedDays.find((x:any) => x.peso) : { peso: "-", day: "" }
       updateLastWeight(myLastWeight);
-      console.log(sortedFoods)
     }
     sortedFoods()
 

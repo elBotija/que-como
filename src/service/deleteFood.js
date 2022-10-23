@@ -2,7 +2,6 @@ import { updateFood } from "./updateFood"
 
 export const deleteFood = async (id, date, foods) => {
   try {
-    console.log({id,date,foods})
     const foodsByDay = foods.find(f => f.day === date)
     const keyToDelete = foodsByDay.id;
     const removedFood = foodsByDay.foods.filter(f => f.id !== id)

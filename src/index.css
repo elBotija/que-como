@@ -37,3 +37,18 @@ code {
   display: flex;
   justify-content: center;
 }
+
+.widget {
+  padding: 1rem;
+  font-weight: bold;
+}
+.widget h2{
+  margin: 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+.history-title{
+  display: flex;
+  justify-content: space-between;
+}

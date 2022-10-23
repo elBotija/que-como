@@ -6,6 +6,7 @@ import HistoryFoods from './components/HistoryFoods';
 import Login from './components/Login';
 import firebase from './service/firebase';
 import Divider from '@mui/material/Divider';
+import LastWeight from './components/LastWeight';
 
 function App() {
   const {user, updateUser}:any = useContext(ApplicationContext)

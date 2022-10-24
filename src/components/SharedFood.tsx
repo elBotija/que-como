@@ -29,7 +29,7 @@ export default function SharedFood() {
               {dayjs.unix(food.time.seconds).format("DD-MM-YYYY HH:mm")}
               <Button color='success' size="small" onClick={() => {
                 try{
-                  addFood(food)
+                  addFood({...food, user: email});
                   deleteShareFood(food.id, email)
                 }catch(e){
                   console.log(e)

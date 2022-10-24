@@ -6,9 +6,10 @@ import { ApplicationContext } from '../ApplicationContext';
 import dayjs from 'dayjs';
 import { addFood } from '../service/addFood';
 import { deleteShareFood } from '../service/deleteShareFood';
+import { updateFood } from '../service/updateFood';
 
 export default function SharedFood() {
-  const { sharedFood, user }:any = React.useContext(ApplicationContext);
+  const { sharedFood, user, foods }:any = React.useContext(ApplicationContext);
   const [alert, setAlert] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -29,7 +30,13 @@ export default function SharedFood() {
               {dayjs.unix(food.time.seconds).format("DD-MM-YYYY HH:mm")}
               <Button color='success' size="small" onClick={() => {
                 try{
-                  addFood({...food, user: email});
+                  const email = user.email;
+                  const isExistDay = foods.find((food:any) => food.day === dayjs(food.time).format("dddd DD-MM-YYYY"))
+                  if(isExistDay){
+                    updateFood(isExistDay.id, {foods: [...isExistDay.foods, food], user: user.email})
+                  }else {
+                    addFood({...food, user:email})
+                  }
                   deleteShareFood(food.id, email)
                 }catch(e){
                   console.log(e)

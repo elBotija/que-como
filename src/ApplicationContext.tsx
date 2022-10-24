@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { getFood } from './service/getFood';
+import { getSharedFood } from './service/getSharedFood';
 
 const ApplicationContext = createContext({
   foods: [],
@@ -10,13 +11,16 @@ const ApplicationContext = createContext({
   updateEditFood: (a: any) => { },
   lastWeight: {},
   updateLastWeight: (a: any) => { },
+  sharedFood: [],
+  updateSharedFood: (a: any) => { },
 })
 
 const Application = (props: any) => {
   const [foods, setFoods] = useState<any>([]);
+  const [sharedFood, setSharedFood] = useState<any>([]);
   const [user, setUser] = useState<any>({});
   const [editFood, setEditFood] = useState<any>({});
-  const [lastWeight, setLastWeight] = useState<any>({peso:"-",day:""});
+  const [lastWeight, setLastWeight] = useState<any>({ peso: "-", day: "" });
 
   const updateFoods = (newFoods: any[]) => {
     setFoods(newFoods);
@@ -35,16 +39,21 @@ const Application = (props: any) => {
     setEditFood(food);
   }
 
+  const updateSharedFood = (sharedFoods: any[]) => {
+    setSharedFood(sharedFoods);
+  }
+
 
   useEffect(() => {
     if (user && user.email) {
       getFood(user.email, updateFoods)
+      getSharedFood(user.email, updateSharedFood)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
-    <ApplicationContext.Provider value={{ foods, updateFoods, user, updateUser, editFood, updateEditFood, lastWeight, updateLastWeight}}>
+    <ApplicationContext.Provider value={{ foods, updateFoods, user, updateUser, editFood, updateEditFood, lastWeight, updateLastWeight, sharedFood, updateSharedFood }}>
       {props.children}
     </ApplicationContext.Provider>
   );

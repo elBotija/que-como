@@ -7,6 +7,7 @@ import Login from './components/Login';
 import firebase from './service/firebase';
 import Divider from '@mui/material/Divider';
 import LastWeight from './components/LastWeight';
+import SharedFood from './components/SharedFood';
 
 function App() {
   const {user, updateUser}:any = useContext(ApplicationContext)
@@ -25,7 +26,7 @@ function App() {
           <span><b>Hola {user.displayName}</b></span><br/>
           <span onClick={() => firebase.auth().signOut()}>Logout</span>
         </p>
-
+        <SharedFood/>
         <h1>Carga tus comidas</h1>
         <Form/>
         <HistoryFoods/>

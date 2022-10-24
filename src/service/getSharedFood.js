@@ -1,9 +1,9 @@
 import { db } from './firebase';
 import { collection, query, orderBy, onSnapshot, where, limit } from 'firebase/firestore';
 
-export const getFood = async (user, updateFn) => {
+export const getSharedFood = async (user, updateFn) => {
   try {
-    const q = query(collection(db, user), orderBy('created', 'desc'), limit(31));
+    const q = query(collection(db, "share-"+user), orderBy('created', 'desc'), limit(31));
     const res = new Promise((resolve, reject) => {
       onSnapshot(q, (querySnapshot)=> {
         const resMap = querySnapshot.docs.map(doc => {

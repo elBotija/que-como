@@ -7,6 +7,7 @@ import es from 'dayjs/locale/es'
 import { CircularProgress } from '@mui/material';
 import Others from './Others';
 import LastWeight from './LastWeight';
+import { shareFood } from '../service/shareFood';
 dayjs.extend(customParseFormat)
 dayjs.locale(es)
 

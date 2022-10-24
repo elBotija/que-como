@@ -54,3 +54,11 @@ code {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+.share-food{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.share-food button{
+  margin-left: auto;
+}

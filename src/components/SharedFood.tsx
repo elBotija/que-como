@@ -7,13 +7,16 @@ import dayjs from 'dayjs';
 import { addFood } from '../service/addFood';
 import { deleteShareFood } from '../service/deleteShareFood';
 import { updateFood } from '../service/updateFood';
+import es from 'dayjs/locale/es'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
+dayjs.locale(es)
 
 export default function SharedFood() {
   const { sharedFood, user, foods }:any = React.useContext(ApplicationContext);
   const [alert, setAlert] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    console.log("share13Food", sharedFood);
     const filter = sharedFood.map((x: any) => ({ ...x.foods[0], id: x.id, created: x.created }));
     setAlert(filter);
   }, [sharedFood]);
@@ -31,7 +34,8 @@ export default function SharedFood() {
               <Button color='success' size="small" onClick={() => {
                 try{
                   const email = user.email;
-                  const isExistDay = foods.find((food:any) => food.day === dayjs(food.time).format("dddd DD-MM-YYYY"))
+                  const dayTxt = dayjs.unix(food.time.seconds).format("dddd DD-MM-YYYY");
+                  const isExistDay = foods.find((food:any) => food.day === dayTxt)
                   if(isExistDay){
                     updateFood(isExistDay.id, {foods: [...isExistDay.foods, food], user: user.email})
                   }else {

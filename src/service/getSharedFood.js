@@ -20,7 +20,6 @@ export const getSharedFood = async (user, updateFn) => {
     })
     return res;
   } catch (error) {
-    console.log("eaeraar",error)
     alert(error)
   }
 }

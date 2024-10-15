@@ -1,30 +1,47 @@
+import React, { useEffect, useState } from 'react';
 import { Container } from '@mui/system';
-import { useContext, useEffect, useState } from 'react';
-import { ApplicationContext } from './ApplicationContext';
+import firebase from './service/firebase';
 import Form from './components/Form';
 import HistoryFoods from './components/HistoryFoods';
 import Login from './components/Login';
-import firebase from './service/firebase';
 import Divider from '@mui/material/Divider';
-import LastWeight from './components/LastWeight';
 import SharedFood from './components/SharedFood';
 
 function App() {
-  const {user, updateUser}:any = useContext(ApplicationContext)
+  const [user, setUser] = useState<firebase.User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log({firebase})
-    firebase.auth().onAuthStateChanged((user:any) => {
-      updateUser(user)
-    })
-  }, [])
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      console.log("Estado de autenticación cambiado:", user ? `Usuario autenticado: ${user.uid}` : "No hay usuario autenticado");
+      setUser(user);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error en el cambio de estado de autenticación:", error);
+      setLoading(false);
+    });
 
-  if(user){
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = () => {
+    firebase.auth().signOut().then(() => {
+      console.log("Usuario cerró sesión exitosamente");
+    }).catch((error) => {
+      console.error("Error al cerrar sesión:", error);
+    });
+  };
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (user) {
     return (
       <Container fixed>
         <p>
           <span><b>Hola {user.displayName}</b></span><br/>
-          <span onClick={() => firebase.auth().signOut()}>Logout</span>
+          <span onClick={handleLogout}>Logout</span>
         </p>
         <SharedFood/>
         <h1>Carga tus comidas</h1>
@@ -34,19 +51,16 @@ function App() {
         <br/>
         <br/>
         <Divider textAlign="center">Gracias por cargar tus comidas</Divider>
-        <p style={{textAlign:"center",color:"#888"}}>La informacion recolectada no se utiliza para otra cosa.</p>
-        <br/>
-        <br/>
-        <br/>
+        <p style={{textAlign:"center",color:"#888"}}>La información recolectada no se utiliza para otra cosa.</p>
       </Container>
     );
   }
-  return(
+
+  return (
     <Container fixed>
-      <Login/>
+      <Login />
     </Container>
   );
-
 }
 
 export default App;

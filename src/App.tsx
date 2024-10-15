@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container } from '@mui/system';
 import firebase from './service/firebase';
 import Form from './components/Form';
@@ -6,15 +6,16 @@ import HistoryFoods from './components/HistoryFoods';
 import Login from './components/Login';
 import Divider from '@mui/material/Divider';
 import SharedFood from './components/SharedFood';
+import { ApplicationContext } from './ApplicationContext';
 
 function App() {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const {user, updateUser}:any = useContext(ApplicationContext)  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       console.log("Estado de autenticación cambiado:", user ? `Usuario autenticado: ${user.uid}` : "No hay usuario autenticado");
-      setUser(user);
+      updateUser(user);
       setLoading(false);
     }, (error) => {
       console.error("Error en el cambio de estado de autenticación:", error);
